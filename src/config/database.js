@@ -1,9 +1,10 @@
+require('dotenv').config();
 module.exports = {
     dialect: 'postgres',
-    host: 'motty.db.elephantsql.com',
-    username: 'jpecjwpc',
-    password: '4YrjdZC4LyZcEW4xNHxzA6J4oaVPuEsL',
-    database: 'jpecjwpc',
+    host: process.env.DB_HOST,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     define: {
         timestamps: true,
         underscored: true,
