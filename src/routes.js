@@ -1,17 +1,17 @@
 const express = require('express');
-const UserController = require('./controllers/PatientController');
+const PatientController = require('./controllers/PatientController');
 
 
 const routes = express.Router();
 
 
-routes.get('/api/patients', UserController.index);
-routes.get('/api/patients/:id', UserController.show);
+routes.get('/api/patients', PatientController.index);
+routes.get('/api/patients/:id', PatientController.show);
 
-routes.post('/api/patients', UserController.store);
+routes.post('/api/patients', PatientController.store);
 
-routes.put('/api/patients/:id', UserController.update);
-routes.delete('/api/patients/:id', UserController.destroy);
+routes.put('/api/patients/:id', PatientController.update);
+routes.delete('/api/patients/:id', PatientController.destroy);
 
 
 module.exports = routes;
