@@ -5,8 +5,13 @@ module.exports = {
     async index(req, res) {
         try {
             const patient = await Patient.findAll();
-
-            return res.json(patient);
+            if (patient == '') {
+                return res.status(404).json({
+                    mensagem: 'A lista esta vazia'
+                })
+            }
+            return res.status(200)
+                .json(patient);
 
         } catch (error) {
             res.status(500).json({
@@ -27,7 +32,9 @@ module.exports = {
                 }
             });
             if (userExists) {
-                return res.json(userExists);
+                return res.status(400).json({
+                    mensagem: "O usuario ja existe"
+                });
             }
 
             const user = await Patient.create({ nome, email, cpf, idade });
@@ -51,8 +58,8 @@ module.exports = {
                     id
                 }
             });
-            if(!userExists){
-                return res.status(400).send({ error: "Usuario não encontrado" });
+            if (!userExists) {
+                return res.status(400).send({ mensagem: "Usuario não encontrado" });
             }
 
             const user = await Patient.findAll({
@@ -61,7 +68,7 @@ module.exports = {
                 }
             });
 
-            return res.json(user);
+            return res.status(200).json(user);
 
         } catch (error) {
             res.status(500).json({
@@ -75,7 +82,17 @@ module.exports = {
         try {
             const { id } = req.params;
             const usuario = req.body;
-            
+
+            const userExists = await Patient.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!userExists) {
+                return res.status(400).json({
+                    mensagem: 'Usuario não encontrado'
+                })
+            }
             await Patient.update(usuario, {
                 where: {
                     id
@@ -103,8 +120,8 @@ module.exports = {
                     id
                 }
             });
-            if(!userExists){
-                return res.status(400).send({ error: "Usuario não encontrado" });
+            if (!userExists) {
+                return res.status(400).send({ mensagem: "Usuario não encontrado" });
             }
             await Patient.destroy({
                 where: {
@@ -112,7 +129,7 @@ module.exports = {
                 }
             })
 
-            return res.json({menssagem: 'Usuario apagado'});
+            return res.status(200).json({ menssagem: 'Usuario apagado' });
 
         } catch (error) {
             res.status(500).json({
